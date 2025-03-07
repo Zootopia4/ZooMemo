@@ -1,0 +1,21 @@
+.rectangle {
+    width: 200px;
+    height: 100px;
+    border: 2px solid #333;
+    margin: 20px;
+    display: inline-block;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.button:hover {
+    background-color: #45a049;
+} 
