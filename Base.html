@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Memoapp</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="rectangle"></div>
-    <div class="rectangle"></div>
-    <button class="button">Click me</button>
+    <div class="container">
+        <form id="memoForm" onsubmit="saveMemo(event)">
+            <input type="text" id="titleInput" placeholder="제목을 입력하세요" required>
+            <textarea id="contentInput" placeholder="내용을 입력하세요" required></textarea>
+            <button type="submit" class="button">저장하기</button>
+        </form>
+    </div>
 
+    <script>
+        function saveMemo(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('titleInput').value;
+            const content = document.getElementById('contentInput').value;
+            
+            // Create a memo object
+            const memo = {
+                title: title,
+                content: content
+            };
+            
+            // Get existing memos or initialize empty array
+            let memos = JSON.parse(localStorage.getItem('memos') || '[]');
+            
+            // Add new memo to array
+            memos.push(memo);
+            
+            // Save back to localStorage
+            localStorage.setItem('memos', JSON.stringify(memos));
+            
+            // Clear the form
+            document.getElementById('memoForm').reset();
+            
+            alert('메모가 저장되었습니다!');
+        }
+    </script>
 </body>
 </html> 
