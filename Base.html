@@ -14,32 +14,24 @@
             <button type="submit" class="button">저장하기</button>
         </form>
     </div>
-
     <script>
         function saveMemo(event) {
             event.preventDefault();
-            
             const title = document.getElementById('titleInput').value;
-            const content = document.getElementById('contentInput').value;
-            
+            const content = document.getElementById('contentInput').value;            
             // Create a memo object
             const memo = {
                 title: title,
                 content: content
-            };
-            
+            };            
             // Get existing memos or initialize empty array
-            let memos = JSON.parse(localStorage.getItem('memos') || '[]');
-            
+            let memos = JSON.parse(localStorage.getItem('memos') || '[]');            
             // Add new memo to array
-            memos.push(memo);
-            
+            memos.push(memo);            
             // Save back to localStorage
-            localStorage.setItem('memos', JSON.stringify(memos));
-            
+            localStorage.setItem('memos', JSON.stringify(memos));            
             // Clear the form
-            document.getElementById('memoForm').reset();
-            
+            document.getElementById('memoForm').reset();            
             alert('메모가 저장되었습니다!');
         }
     </script>
