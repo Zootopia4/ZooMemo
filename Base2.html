@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="memo">  
+        <input id="title" class="rectangle" type="text"></div> <br><br>
+        <input id="contents" class="rectangle" type="text"></div> <br><br>
+        <button type="submit" class="button">Click me</button> <br><br>
+    </form>
+
+    <script>
+        // 사용자가 작성한 메모를 받아온다.
+        // 자바스크립트 객체를 JSON 문자열로 변환한다.
+        // 제목과 내용을 local storage 에 저장한다.
+
+        const title = document.getElementById('title');
+        const contents = document.getElementById('contents');
+        const memo = document.getElementById('memo');
+
+        memo.addEventListener('submit', (event) => { // 저장하기를 눌렀을 때
+
+            event.preventDefault(); // 페이지 새로고침 방지
+
+            const newMemo = { // 객체 형식으로 사용자가 작성한 제목과 내용을 저장
+                title : title.value,
+                contents : contents.value
+            };
+
+            // 스토리지에서 값을 꺼내오려고 했는데. 값이 없다면 오류가 나기 때문에 저장된 목록을 가져오고, 없다면 빈 배열을 만든다.
+            let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');  // local storage에 텍스트로 저장된 것을 꺼내와서 객체 형식으로 전환한 리스트 
+            memoList.push(newMemo); // 새로운 메모를 추가
+
+            localStorage.setItem('memoList', JSON.stringify(memoList)); // local storage 저장을 위해 텍스트 형식으로 변환
+            
+            alert("메모가 저장되었습니다.");
+            document.getElementById('memo').reset();
+        });
+
+
+    </script>
+
+</body>
+</html> 
