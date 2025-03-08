@@ -3,47 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memoapp</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/styles.css">
+    <link rel="shortcut icon" href="./src/주토피아.png" type="image/x-icon">
+    <!--  구글폰트 적용  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Gamja+Flower&display=swap"
+          rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <form id="memoForm" onsubmit="saveMemo(event)">
-            <input type="text" id="titleInput" placeholder="제목을 입력하세요" required>
-            <textarea id="contentInput" placeholder="내용을 입력하세요" required></textarea>
-            <button type="submit" class="button">저장하기</button>
-        </form>
-        <br>
-        <br>
-        <br>
-        <form id="memoEditForm" action="">
 
-            <input id="titleEdit" type="text">
-            <textarea id="contentEdit"></textarea>
-        </form>
-    </div>
-    <script>
-        function saveMemo(event) {
-            event.preventDefault();
-            const title = document.getElementById('titleInput').value;
-            const content = document.getElementById('contentInput').value;            
-            // Create a memo object
-            const memo = {
-                title: title,
-                content: content
-            };            
-            // Get existing memos or initialize empty array
-            let memos = JSON.parse(localStorage.getItem('memos') || '[]');            
-            // Add new memo to array
-            memos.push(memo);            
-            // Save back to localStorage
-            localStorage.setItem('memos', JSON.stringify(memos));            
-            // Clear the form
-            document.getElementById('memoForm').reset();            
-            alert('메모가 저장되었습니다!');
+    <form id="memo" class="container">
+        <div class="memoForm">
+            <input id="title" class="rectangle" type="text" placeholder="제목을 입력해주세요"><br>
+            <textarea id="contents" class="rectangle" placeholder="내용을 입력해주세요"></textarea> <br>
+            <button type="submit" class="button">저장</button>
+    
+    
+        </div>
+    </form>
+        <h1>작성된 메모</h1>
+        <div class="memoList">
+            <h3 id="showMemo"></h3>
+        </div>
+    
 
+<script>
+    // 사용자가 작성한 메모를 받아온다.
+    // 자바스크립트 객체를 JSON 문자열로 변환한다.
+    // 제목과 내용을 local storage 에 저장한다.
+    // local storage에 저장된 메모들을 화면에 보여준다.
+
+    const title = document.getElementById('title');
+    const contents = document.getElementById('contents');
+    const memo = document.getElementById('memo');
+
+    // id 값이 local storage 에 없다면 키를 생성하고 0부터 id 설정
+
+
+    memo.addEventListener('submit', (event) => { // 저장하기를 눌렀을 때
+
+        event.preventDefault(); // 페이지 새로고침 방지
+
+        // id 값이 로컬스토리지에 없다면 키를 생성하고 0부터 id 설정
+        let id = JSON.parse(localStorage.getItem('id'));
+        id = id ?? 0;
+
+        const newMemo = { // 객체 형식으로 사용자가 작성한 제목과 내용을 저장
+            title: title.value,
+            contents: contents.value,
+            id: id.value,
+            createdAt: new Date().toLocaleString() //현재 시간 저장
+        };
+
+        newMemo.id = id; // 메모에 id 지정
+
+        // storage 값을 꺼내오려고 했는데. 값이 없다면 오류가 나기 때문에 저장된 목록을 가져오고, 없다면 빈 배열을 만든다.
+        let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');  // local storage에 텍스트로 저장된 것을 꺼내와서 객체 형식으로 전환한 리스트
+        memoList.push(newMemo); // 메모
+
+        localStorage.setItem('memoList', JSON.stringify(memoList)); // local storage 저장을 위해 텍스트 형식으로 변환
+        localStorage.setItem('id', JSON.stringify(++id)); // local storage 에 id 저장 - id 는 고유한 값을 가져야 하기 때문에 증가시켜준다.
+
+        alert("메모가 저장되었습니다.");
+        document.getElementById('memo').reset();
+
+        setMemo();
+
+    });
+
+    // local storage 에 저장된 메모들을 화면에 보여주기
+    function setMemo() {
+        const showMemo = document.getElementById('showMemo');
+        let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');
+
+        while (showMemo.firstChild) { // 기존의 메모 제거
+            showMemo.firstChild.remove();
         }
-    </script>
+
+        // 로컬 스토리지에서 메모 가져와서 최신순으로 정렬
+        for (let i = memoList.length - 1; i >= 0; i--) {
+            let article = document.createElement('article');
+
+            let memoTitle = document.createElement('h2'); // 메모의 제목이 h2 형식으로 화면에 나올 수 있도록 구현
+            memoTitle.textContent = memoList[i].title;
+
+            let memoTime = document.createElement('p'); // 시간 표시를 위한 요소
+            memoTime.textContent = memoList[i].createdAt;
+
+            let memoContents = document.createElement('p'); // 메모의 내용이 p 형식으로 화면에 나올 수 있도록 구현
+            memoContents = memoList[i].contents;
+
+            // 수정 버튼
+            let modifyBtn = document.createElement('button');
+                modifyBtn.innerText = "수정";
+            // 삭제 버튼
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerText = "삭제";
+
+            article.append(memoTitle, memoContents, modifyBtn, deleteBtn);
+            showMemo.append(article);
+
+            article.append(memoTitle, memoTime, memoContents);
+            showMemo.append(article);
+        }
+    }
+
+    // 삭제 버튼 누르면 해당 메모 삭제
+    // 삭제 버튼을 누른 메모의 dataset 에 저장된 id 를 저장된 값들이랑 비교, 일치하는 article 삭제
+    function deleteForm(e) {
+        memoList.forEach((a, i) => {
+                if (a.id == e.target.parentNode.dataset.id) { // 메모 배열의 id 를 돌면서 클릭된 것의 id 와 비교
+                    memoList.splice(i, 1); // 클릭된 메모 배열에서 자르기
+                    localStorage.setItem('memoList', JSON.stringify(memoList)); // 자른 메모 배열 local storage 에 저장
+                    setMemo(); // 새로 저장된 메모 화면에 보여주기
+                    return;
+                }
+            }
+        )
+    };
+</script>
 
 </body>
-</html> 
+</html>
