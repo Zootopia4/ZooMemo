@@ -14,7 +14,7 @@
             <button type="submit" class="button">Click me</button> <br><br>
 
             <h1>작성된 메모 : </h1>
-            <h3 id="showMemo"></h3>
+            <p id="showMemo"></p>
         </form>
     
 
@@ -52,17 +52,22 @@
 
         // local storage 에 저장된 메모들을 화면에 보여주기
         function setMemo() {
+
             const showMemo = document.getElementById('showMemo');
-            let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');
+            let memoList = JSON.parse(localStorage.getItem('memoList') || '[]'); // local storage 에서 불러오기
 
             while(showMemo.firstChild) { // 기존의 메모 제거
                 showMemo.firstChild.remove();
             }
 
             // 로컬 스토리지에서 메모 가져와서 최신순으로 정렬
+            // let i = memoList.length -1 -> 0부터 시작하므로 -1을 해준다.
+            // i >= 0 -> i 가 0보다 크거나 같을때까지 아래 for 문 반복 실행
+            // 실행이 끝나고 나면 i-- 실행
             for(let i = memoList.length -1; i >= 0; i--) {
                 let article = document.createElement('article');
                 
+                // 화면에 사용자가 작성한 메모 title 보여주기
                 let memoTitle = document.createElement('h2');
                 memoTitle.textContent = memoList[i].title;
 
@@ -71,23 +76,6 @@
             }
         }
 
-        var btn=document.createElement("button");
-
-        btn.innerText="버튼3"; 
-        btn.textContent="버튼2";
- 
-        //생성된 버튼을 body 요소의 자식으로 추가 
-        document.body.appendChild(btn);
-
-
-        //메모 불러오기
-        let memosData = JSON.parse(localStorage.getItem('memos') || '[]');
-            console.log(memosData);
-            console.log(memosData.title);
-            console.log(memosData.content);
-
-            document.getElementById('titleEdit').value = memosData[0].title
-            document.getElementById('contentEdit').value = memosData[0].content
 
     </script>
 
