@@ -133,6 +133,7 @@ body {
     /* 리스트 높이 고정 */
     height: 700px;
 }
+
 .container h1 {
     /*display: block;*/
     text-align: center;
@@ -143,19 +144,48 @@ body {
     padding: 10px;
 
 }
+
 .container .memoList article {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 20px;
+    padding-bottom: 25px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
 }
 
 .container .memoList article h2 {
     color: #333;
     margin-top: -5px;
-    margin-bottom: 10px;}
-
+    margin-bottom: 10px;
+}
 
 .container .memoList article p {
     font-size: 13px;
+}
+
+.container .memoList article button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background-color: #87CEEB;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.container .memoList article button:nth-of-type(1) {
+    margin-right: 0;
+}
+
+/* 버튼 hover 상태 스타일 */
+.container .memoList article button:hover {
+    /* hover 시 버튼 배경색 변경 */
+    background-color: #66b3e3;
 }

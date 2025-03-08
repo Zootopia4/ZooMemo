@@ -5,30 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./src/styles.css">
-  <link rel="shortcut icon" href="./src/주토피아.png" type="image/x-icon">
-<!--  구글폰트 적용  -->
+    <link rel="shortcut icon" href="./src/주토피아.png" type="image/x-icon">
+    <!--  구글폰트 적용  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Gamja+Flower&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Gamja+Flower&display=swap"
+          rel="stylesheet">
 </head>
-<body>
+<body class="container">
 
-<form id="memo" class="container">
-    <div class="memoForm">
-        <input id="title" class="rectangle" type="text" placeholder="제목을 입력해주세요"><br>
-        <textarea id="contents" class="rectangle" placeholder="내용을 입력해주세요"></textarea> <br>
-      <button type="submit" class="button">저장</button>
-        
+    <form id="memo" >
+        <div class="memoForm">
+            <label for="title"></label>
+            <input id="title" class="rectangle" type="text" placeholder="제목을 입력해주세요"><br>
+            <label for="contents"></label>
+            <textarea id="contents" class="rectangle" placeholder="내용을 입력해주세요"></textarea> <br>
+            <button type="submit" class="button">저장</button>
 
-    </div>
-    <h1>작성된 메모</h1>
-    <div class="memoList">
-<!--        <h1>작성된 메모</h1>-->
-        <h3 id="showMemo"></h3>
 
-    </div>
-
-</form>
+        </div>
+    </form>
+        <h1>작성된 메모</h1>
+        <div class="memoList">
+            <h3 id="showMemo"></h3>
+        </div>
 
 
 <script>
@@ -66,7 +66,7 @@
         memoList.push(newMemo); // 메모
 
         localStorage.setItem('memoList', JSON.stringify(memoList)); // local storage 저장을 위해 텍스트 형식으로 변환
-        localStorage.setItem('id', JSON.stringify(++id)); // local storage 에 id 저장
+        localStorage.setItem('id', JSON.stringify(++id)); // local storage 에 id 저장 - id 는 고유한 값을 가져야 하기 때문에 증가시켜준다.
 
         alert("메모가 저장되었습니다.");
         document.getElementById('memo').reset();
@@ -80,28 +80,52 @@
         const showMemo = document.getElementById('showMemo');
         let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');
 
-        while (showMemo.firstChild) { // 기존의 메모 제거
+        while (showMemo.firstChild) {
             showMemo.firstChild.remove();
         }
 
-        // 로컬 스토리지에서 메모 가져와서 최신순으로 정렬
         for (let i = memoList.length - 1; i >= 0; i--) {
             let article = document.createElement('article');
+            article.dataset.id = memoList[i].id; // article에 data-id 속성 추가
 
             let memoTitle = document.createElement('h2');
             memoTitle.textContent = memoList[i].title;
 
-            let memoTime = document.createElement('p'); // 시간 표시를 위한 요소
+            let memoTime = document.createElement('p');
             memoTime.textContent = memoList[i].createdAt;
-            let memoContents = document.createElement('p');
-            memoContents = memoList[i].contents;
 
-            
-            article.append(memoTitle,memoTime, memoContents);
+            let memoContents = document.createElement('p');
+            memoContents.textContent = memoList[i].contents; // textContent로 수정
+
+            // 삭제 버튼만 생성
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerText = "삭제";
+            deleteBtn.onclick = deleteForm; // 삭제 이벤트 연결
+
+            article.append(memoTitle, memoContents, memoTime, deleteBtn);
             showMemo.append(article);
         }
     }
 
+    // 삭제 기능 수정
+    function deleteForm(e) {
+        if (confirm('정말로 삭제하시겠습니까?')) {
+            let memoList = JSON.parse(localStorage.getItem('memoList') || '[]');
+            const targetId = e.target.parentNode.dataset.id;
+            
+            memoList = memoList.filter(memo => memo.id != targetId);
+            localStorage.setItem('memoList', JSON.stringify(memoList));
+            setMemo();
+        }
+    }
+
+    console.log(`
+♡ ∩_∩
+（„• ֊ •„)♡
+┏━∪∪━━━━┓
+♡ 제작: 동우 주경 주성 성리 ♡
+┗━━━━━━┛
+`);
 </script>
 
 </body>
