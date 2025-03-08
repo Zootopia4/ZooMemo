@@ -13,6 +13,14 @@
             <textarea id="contentInput" placeholder="내용을 입력하세요" required></textarea>
             <button type="submit" class="button">저장하기</button>
         </form>
+        <br>
+        <br>
+        <br>
+        <form id="memoEditForm" action="">
+
+            <input id="titleEdit" type="text">
+            <textarea id="contentEdit"></textarea>
+        </form>
     </div>
     <script>
         function saveMemo(event) {
@@ -33,7 +41,27 @@
             // Clear the form
             document.getElementById('memoForm').reset();            
             alert('메모가 저장되었습니다!');
+
+
+
+            //메모 불러오기
+            let memosData = JSON.parse(localStorage.getItem('memos') || '[]');
+            console.log(memosData);
+            console.log(memosData.title);
+            console.log(memosData.content);
+
+            document.getElementById('titleEdit').value = memosData[0].title
+            document.getElementById('contentEdit').value = memosData[0].content
+
+
+
+
+
+
+
+
         }
     </script>
+
 </body>
 </html> 
