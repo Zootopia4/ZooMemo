@@ -70,25 +70,6 @@
                 showMemo.append(article);
             }
         }
-
-        var btn=document.createElement("button");
-
-        btn.innerText="버튼3"; 
-        btn.textContent="버튼2";
- 
-        //생성된 버튼을 body 요소의 자식으로 추가 
-        document.body.appendChild(btn);
-
-
-        //메모 불러오기
-        let memosData = JSON.parse(localStorage.getItem('memos') || '[]');
-            console.log(memosData);
-            console.log(memosData.title);
-            console.log(memosData.content);
-
-            document.getElementById('titleEdit').value = memosData[0].title
-            document.getElementById('contentEdit').value = memosData[0].content
-
     </script>
 
 </body>
